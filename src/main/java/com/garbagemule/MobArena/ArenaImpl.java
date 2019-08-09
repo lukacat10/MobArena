@@ -831,17 +831,7 @@ public class ArenaImpl implements Arena
             clearInv(p);
         }
         
-        if (!settings.getBoolean("auto-respawn", true)) {
-            deadPlayers.add(p);
-            endArena();
-            return;
-        }
-        
-        double full = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        p.setHealth(full);
-
-        plugin.getServer().getScheduler()
-            .scheduleSyncDelayedTask(plugin, () -> revivePlayer(p));
+        deadPlayers.add(p);
         endArena();
     }
 
@@ -865,10 +855,6 @@ public class ArenaImpl implements Arena
 
     @Override
     public void playerRespawn(Player p) {
-        if (settings.getBoolean("auto-respawn", true)) {
-            return;
-        }
-        
         deadPlayers.remove(p);
         plugin.getServer().getScheduler()
             .scheduleSyncDelayedTask(plugin, () -> revivePlayer(p));

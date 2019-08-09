@@ -15,7 +15,6 @@ pvp-enabled: false
 monster-infight: false
 allow-teleporting: false
 spectate-on-death: true
-auto-respawn: true
 share-items-in-arena: true
 keep-dropped-items: false
 min-players: 0
