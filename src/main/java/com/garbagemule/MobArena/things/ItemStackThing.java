@@ -4,6 +4,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ItemStackThing implements Thing {
     private ItemStack stack;
 
@@ -49,5 +53,15 @@ public class ItemStackThing implements Thing {
             .name()
             .replace("_", " ")
             .toLowerCase();
+    }
+
+    public void markItemStack(){
+        ItemMeta meta = stack.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        //TODO: Name is volunerable to items being transferred between arenas
+        //TODO: Configurable name
+        lore.add("MobArena kit");
+        meta.setLore(lore);
+        stack.setItemMeta(meta);
     }
 }

@@ -17,6 +17,7 @@ allow-teleporting: false
 spectate-on-death: true
 auto-respawn: true
 share-items-in-arena: true
+keep-dropped-items: false
 min-players: 0
 max-players: 0
 max-join-distance: 0

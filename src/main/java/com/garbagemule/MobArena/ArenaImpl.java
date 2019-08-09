@@ -104,6 +104,7 @@ public class ArenaImpl implements Arena
     // Classes stuff
     private ArenaClass defaultClass;
     private Map<String,ArenaClass> classes;
+    private boolean markClassItems;
     
     // Blocks and pets
     private PriorityBlockingQueue<Repairable> repairQueue;
@@ -177,6 +178,7 @@ public class ArenaImpl implements Arena
         // Classes, items and permissions
         this.classes      = plugin.getArenaMaster().getClasses();
         this.limitManager = new ClassLimitManager(this, classes, makeSection(section, "class-limits"));
+        this.markClassItems = settings.getBoolean("keep-dropped-items", false);
 
         String defaultClassName = settings.getString("default-class", null);
         if (defaultClassName != null) {
@@ -1138,6 +1140,11 @@ public class ArenaImpl implements Arena
         InventoryManager.clearInventory(p);
         removePotionEffects(p);
         arenaPlayer.setArenaClass(arenaClass);
+
+        if(this.markClassItems){
+            arenaClass.markItems();
+        }
+
         arenaClass.grantItems(p);
         arenaClass.grantPotionEffects(p);
         arenaClass.grantLobbyPermissions(p);

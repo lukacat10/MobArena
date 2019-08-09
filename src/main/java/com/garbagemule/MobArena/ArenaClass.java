@@ -2,6 +2,7 @@ package com.garbagemule.MobArena;
 
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.framework.ArenaMaster;
+import com.garbagemule.MobArena.things.ItemStackThing;
 import com.garbagemule.MobArena.things.Thing;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -121,6 +123,25 @@ public class ArenaClass
         this.items = new ArrayList<>(items.size());
         items.forEach(this::addItem);
     }
+
+    /**
+     * Iterates all the items in the arena class and marks them.
+     */
+    public void markItems(){
+        List<Thing> allThings = new ArrayList<>(items);
+        allThings.addAll(armor);
+        allThings.addAll(Arrays.asList(helmet, chestplate, leggings, boots, offhand));
+
+        for (Thing item:
+             allThings) {
+            if(item == null)
+                continue;
+            if(!(item instanceof ItemStackThing))
+                continue;
+            ItemStackThing itemStackThing = (ItemStackThing) item;
+            itemStackThing.markItemStack();
+        }
+    }
     
     /**
      * Replace the current armor list with the given list.
@@ -151,6 +172,7 @@ public class ArenaClass
         PlayerInventory inv = p.getInventory();
 
         // Fork over the items.
+        //TODO: No instance checking, also not checking if the config allows keeping rewards
         items.forEach(item -> item.giveTo(p));
         
         // Check for legacy armor-node items
