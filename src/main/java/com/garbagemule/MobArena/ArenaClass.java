@@ -123,25 +123,6 @@ public class ArenaClass
         this.items = new ArrayList<>(items.size());
         items.forEach(this::addItem);
     }
-
-    /**
-     * Iterates all the items in the arena class and marks them.
-     */
-    public void markItems(){
-        List<Thing> allThings = new ArrayList<>(items);
-        allThings.addAll(armor);
-        allThings.addAll(Arrays.asList(helmet, chestplate, leggings, boots, offhand));
-
-        for (Thing item:
-             allThings) {
-            if(item == null)
-                continue;
-            if(!(item instanceof ItemStackThing))
-                continue;
-            ItemStackThing itemStackThing = (ItemStackThing) item;
-            itemStackThing.markItemStack();
-        }
-    }
     
     /**
      * Replace the current armor list with the given list.

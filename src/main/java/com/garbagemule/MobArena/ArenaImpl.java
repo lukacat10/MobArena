@@ -3,10 +3,7 @@ package com.garbagemule.MobArena;
 import static com.garbagemule.MobArena.util.config.ConfigUtils.makeSection;
 
 import com.garbagemule.MobArena.ScoreboardManager.NullScoreboardManager;
-import com.garbagemule.MobArena.steps.Step;
-import com.garbagemule.MobArena.steps.StepFactory;
-import com.garbagemule.MobArena.steps.PlayerJoinArena;
-import com.garbagemule.MobArena.steps.PlayerSpecArena;
+import com.garbagemule.MobArena.steps.*;
 import com.garbagemule.MobArena.events.ArenaEndEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerDeathEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
@@ -20,8 +17,10 @@ import com.garbagemule.MobArena.repairable.Repairable;
 import com.garbagemule.MobArena.repairable.RepairableComparator;
 import com.garbagemule.MobArena.repairable.RepairableContainer;
 import com.garbagemule.MobArena.things.InvalidThingInputString;
+import com.garbagemule.MobArena.things.ItemStackThing;
 import com.garbagemule.MobArena.things.Thing;
 import com.garbagemule.MobArena.util.ClassChests;
+import com.garbagemule.MobArena.util.ItemMarker;
 import com.garbagemule.MobArena.util.inventory.InventoryManager;
 import com.garbagemule.MobArena.util.timer.AutoStartTimer;
 import com.garbagemule.MobArena.util.timer.StartDelayTimer;
@@ -771,6 +770,9 @@ public class ArenaImpl implements Arena
 
         // Clear inventory if player is an arena player, and unmount
         if (arenaPlayers.contains(p)) {
+            if(markClassItems && inArena(p)){
+                ItemMarker.rewardUnmarkedItems(p, getRewardManager());
+            }
             unmount(p);
             clearInv(p);
         }
@@ -1127,11 +1129,12 @@ public class ArenaImpl implements Arena
         removePotionEffects(p);
         arenaPlayer.setArenaClass(arenaClass);
 
+        arenaClass.grantItems(p);
+
         if(this.markClassItems){
-            arenaClass.markItems();
+            ItemMarker.markPlayersItems(p);
         }
 
-        arenaClass.grantItems(p);
         arenaClass.grantPotionEffects(p);
         arenaClass.grantLobbyPermissions(p);
 
